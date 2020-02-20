@@ -1,0 +1,12 @@
+{% extends "header.html" %}
+{% block content %}
+
+	<h2 class="center">About</h2>
+
+	{% for i in about %}
+		<div class="about">
+			<h3>{{i.name}}</h3>
+			<p>{{i.description}}</p>
+   		</div>
+    {% endfor %}
+{% endblock %}

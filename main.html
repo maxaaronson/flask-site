@@ -1,0 +1,42 @@
+{% extends "header.html" %}
+{% block content %}
+
+	<h2 class="center">List of projects</h2>
+
+
+	<h4><form class="center" action="{{url_for('main')}}" method="post">
+			Show Projects Only For: &nbsp&nbsp&nbsp 
+	  <input type="checkbox" name="Java" checked> Java
+	  <input type="checkbox" name="JS" checked> JavaScript
+	  <input type="checkbox" name="Python" checked> Python
+	   &nbsp&nbsp&nbsp  
+	  <input type="submit" value="Filter">
+	</form></h4>
+
+	{% for i in projects %}
+		<div class="project">
+
+			{% if i.type == 'Java' %}
+			    {% set type_link = 'https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/1200px-Java_programming_language_logo.svg.png' %}
+			{% endif %}
+			{% if i.type == 'JS' %}
+			    {% set type_link = 'https://www.javatpoint.com/images/javascript/javascript_logo.png' %}
+			{% endif %}
+			{% if i.type == 'Python' %}
+			    {% set type_link = 'https://32414320wji53mwwch1u68ce-wpengine.netdna-ssl.com/wp-content/uploads/2013/04/python-logo-236x300.png' %}
+			{% endif %}
+
+			<h3>{{i.name}} <img style="float:right;height:42px;" src="{{type_link}}"></h3>
+			<p>{{i.description}}</p>
+			<p>
+				<a href="{{i.github_link}}">Github</a>&nbsp &nbsp  
+			    {% if i.link3 %}    
+                    <a href="{{i.link3}}">{{i.link3_txt}}</a>
+                {% endif %}
+                {% if i.link2 %}    
+                    <a href="{{url_for('game', filename=i.link2)}}">{{i.link2_txt}}</a>
+                {% endif %}
+			</p>
+   		</div>
+    {% endfor %}
+{% endblock %}
