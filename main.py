@@ -23,7 +23,7 @@ from forms import LoginForm
 
 app = Flask(__name__)
 
-engine = create_engine(open('db_connect').readline())
+engine = create_engine(open('/home/amset/webapps/max_flask/htdocs/db_connect').readline())
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
