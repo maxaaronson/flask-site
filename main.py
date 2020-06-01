@@ -1,24 +1,20 @@
 import site
 import sys
+
 site.addsitedir('/home/amset/webapps/max_flask/venv/lib/python3.5/site-packages')
 
-from flask import (Flask,
-                   render_template,
-                   request,
-                   redirect,
-                   url_for,
-                   flash,
-                   jsonify,
-                   session as login_session,
-                   g,
-                   make_response)
-from db_setup import Base, Projects, Education, Work_Experience, About, User
-from sqlalchemy import create_engine, desc
-from sqlalchemy.orm import sessionmaker
+from flask import (Flask, flash, g, jsonify, make_response, redirect,
+                   render_template, request)
+from flask import session as login_session
+from flask import url_for
+from flask_login import LoginManager, current_user, login_user
+
+from db_setup import About, Base, Education, Projects, User, Work_Experience
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from flask_login import LoginManager, current_user, login_user
 from forms import LoginForm
+from sqlalchemy import create_engine, desc
+from sqlalchemy.orm import sessionmaker
 
 
 app = Flask(__name__)
@@ -56,6 +52,7 @@ admin.add_view(MyModelView(User, session))
 @app.route("/", methods=['GET', 'POST'])
 def main():
     if request.method == 'POST':
+        # Query the types selected by radio buttons - order by date
         prog_array = {""}
         if (request.form.get('Java') == "on"):
             prog_array.add('Java')
@@ -63,10 +60,10 @@ def main():
             prog_array.add('JS')
         if (request.form.get('Python') == "on"):
             prog_array.add('Python')
-        print(prog_array)
-        projects = session.query(Projects).filter(Projects.type.in_(prog_array))
+        projects = session.query(Projects).filter(
+            Projects.type.in_(prog_array)).order_by(desc(Projects.create_date))
     else:
-        projects = session.query(Projects)
+        projects = session.query(Projects).order_by(desc(Projects.create_date))
     return render_template("main.html", projects=projects)
 
 @app.route("/about/")
@@ -128,5 +125,3 @@ def login():
 ###########################################################
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
-
-

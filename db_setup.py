@@ -5,7 +5,7 @@
 ####################################
 
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -19,6 +19,7 @@ Base = declarative_base()
 class Projects(Base):
     __tablename__ = 'projects'
     id = Column(Integer, primary_key=True, nullable=False)
+    create_date = Column(Date)
     name = Column(String(80))
     type = Column(String(80))
     description = Column(String(500))
